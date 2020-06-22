@@ -16,7 +16,7 @@ import common.*;
  * @author Dr Robert Lagani&egrave;re
  * @version July 2000
  */
-public class ClientConsole implements ChatIF
+public class ServerConsole implements ChatIF
 {
   //Class variables *************************************************
 
@@ -36,12 +36,12 @@ public class ClientConsole implements ChatIF
   //Constructors ****************************************************
 
   /**
-   * Constructs an instance of the ClientConsole UI.
+   * Constructs an instance of the ServerConsole UI.
    *
    * @param host The host to connect to.
    * @param port The port to connect on.
    */
-  public ClientConsole(String UserId, String host, int port)
+  public ServerConsole(String UserId, String host, int port)
   {
     try
     {
@@ -62,6 +62,7 @@ public class ClientConsole implements ChatIF
    * This method waits for input from the console.  Once it is
    * received, it sends it to the client's message handler.
    */
+
   public void accept()
   {
     try
@@ -73,7 +74,7 @@ public class ClientConsole implements ChatIF
       while (true)
       {
         message = fromConsole.readLine();
-        client.handleMessageFromClientUI(message);
+        client.handleMessageFromClientUI("SERVER MSG> " + message);
       }
     }
     catch (Exception ex)
@@ -103,25 +104,35 @@ public class ClientConsole implements ChatIF
    * @param args[0] The host to connect to.
    */
    static String UserId = "";
-
   public static void main(String[] args)
   {
     String host = "";
-    int port = DEFAULT_PORT;  //The port number
+    int port = 0;  //The port number
 
     try
     {
       UserId = args[0];
+
       host = args[1];
-      port = Integer.parseInt(args[2]);
 
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
       host = "localhost";
     }
-    ClientConsole chat= new ClientConsole(UserId, host, port);
+    ServerConsole chat= new ServerConsole(UserId, host, DEFAULT_PORT);
     chat.accept();  //Wait for console data
   }
 }
+
 //End of ConsoleChat class
+/*class newAbstractClient extends AbstractClient{
+  public void connectionClosed() {
+    System.out.println
+      ("server has shut down!");
+  }
+  public void connectionException(Exception exception) {
+    System.out.println
+      ("server has gone down!");
+  }
+}*/
